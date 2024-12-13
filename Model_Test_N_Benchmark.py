@@ -233,61 +233,9 @@ def benchmark_model(model, model_type, input_size, device=device):
     except Exception as e:
         logger.error(f"벤치마킹 중 오류 발생: {e}")
 
-# ============================================== 
-# ================== 모델 클래스=================
-# ============================================== 
-# 사용자가 테스트할 모델을 정의하거나 가져옵니다.
-# 예시로 몇 가지 모델 클래스를 정의합니다.
 
-# 예시 CNN 모델
-class SimpleCNN(nn.Module):
-    def __init__(self, input_channels=3, num_classes=10):
-        super(SimpleCNN, self).__init__()
-        self.input_channels = input_channels
-        self.conv = nn.Conv2d(input_channels, 16, kernel_size=3, padding=1)
-        self.fc = nn.Linear(16 * 256 * 256, num_classes)
-    
-    def forward(self, x):
-        x = self.conv(x)
-        x = torch.relu(x)
-        x = x.view(x.size(0), -1)
-        x = self.fc(x)
-        return x
 
-# 예시 LLM 모델 (GPT-2)
-from transformers import GPT2LMHeadModel
-
-# 예시 Multimodal 모델 (CLIP)
-from transformers import CLIPModel
-
-# 예시 Stable Diffusion 모델
-# Stable Diffusion은 복잡한 구조를 가지므로, 여기서는 간단한 예시로 대체합니다.
-class StableDiffusionModel(nn.Module):
-    def __init__(self, input_channels=3, num_classes=10):
-        super(StableDiffusionModel, self).__init__()
-        self.input_channels = input_channels
-        self.condition_dim = 768
-        self.time_embedding = nn.Sequential(
-            nn.Linear(128, 256),
-            nn.ReLU(),
-            nn.Linear(256, 128)
-        )
-        self.conv = nn.Conv2d(input_channels, 16, kernel_size=3, padding=1)
-        self.fc = nn.Linear(16 * 256 * 256, num_classes)
-    
-    def forward(self, x, condition, time_embedding):
-        # 단순한 예시
-        x = self.conv(x)
-        x = torch.relu(x + condition.unsqueeze(-1).unsqueeze(-1))
-        x = x.view(x.size(0), -1)
-        x = self.fc(x + time_embedding)
-        return x
-
-# ============================================== 
-# ==============================================   
-# ============================================== 
-
-# ==================== 알고리즘 테스트 함수들 ====================
+# ==================== 알고리즘 테스트 함수 ====================
 
 def create_dummy_dataloader(input_size, num_samples=100, batch_size=16):
     """
